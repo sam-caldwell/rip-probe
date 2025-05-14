@@ -82,12 +82,14 @@ func main() {
 	fmt.Printf("Sent RIP request to %v, waiting for responses...\n", dst)
 
 	if err = conn.SetReadDeadline(time.Now().Add(5 * time.Second)); err != nil {
+		fmt.Printf("Error: %v", err)
 		return
 	}
 	buf := make([]byte, 512)
 	for {
 		n, addr, err := conn.ReadFromUDP(buf)
 		if err != nil {
+			fmt.Printf("Error: %v", err)
 			break // timeout or other error
 		}
 		parseRIPResponse(buf[:n], addr)
